@@ -1,21 +1,7 @@
-
-/** TCP echo client program for ANU COMP3310.
- *
- *  Run with
- *      java TcpClient [ IP addr ] [ port ]
- *
- *  Written by Hugh Fisher u9011925, ANU, 2024
- *  Released under Creative Commons CC0 Public Domain Dedication
- *  This code may be freely copied and modified for any purpose
- */
-
-
 import java.io.*;
 import java.net.*;
 
-
 public class GopherClient {
-
     //  IP address and port that client will contact
     static String   serviceHost = "127.0.0.1";
     static int      servicePort = 70;
@@ -27,7 +13,7 @@ public class GopherClient {
     {
         Socket              sock;
         BufferedReader      input;
-        String              line, reply;
+        String              line;
         InetSocketAddress   remote;
 
 

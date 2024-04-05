@@ -21,7 +21,7 @@ public enum GopherItemType {
 
     public final String label;
 
-    private GopherItemType(String label) {
+    GopherItemType(String label) {
         this.label = label;
     }
 
