@@ -17,6 +17,6 @@ public class GopherResponseProcessor {
             throw new IllegalArgumentException("Invalid gopher menu line");
         }
 
-
+        return null;
     }
 }
