@@ -8,15 +8,16 @@ public class GopherResponseProcessor {
     public static GopherRow menuLineToGopherRow(String line) throws IllegalArgumentException {
         // The first character is always the Gopher item type
         StringBuilder sb = new StringBuilder(line);
-        String itemType = sb.charAt(0) + "";
+        String itemTypeString = sb.charAt(0) + "";
+        GopherItemType itemType = GopherItemType.fromLabel(itemTypeString);
         sb.deleteCharAt(0);
 
         // Tokenise by tabs
-        String[] data = sb.toString().split("\t");
-        if (data.length < 1) {
+        String[] menuLine = sb.toString().split("\t");
+        // There should be four tokens, since the itemType has already been extracted above.
+        if (menuLine.length != 4) {
             throw new IllegalArgumentException("Invalid gopher menu line");
         }
-
-        return null;
+        return new GopherRow(itemType, menuLine[0], menuLine[1], menuLine[2], menuLine[3]);
     }
 }
