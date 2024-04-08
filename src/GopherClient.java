@@ -26,9 +26,6 @@ public class GopherClient implements GopherClientInterface{
      */
     public String send(String request) {
         String response = "";
-        BufferedReader input;
-        String line;
-
         try{
             sock = new Socket(serviceHost, servicePort);
             sendRequest(sock, request);

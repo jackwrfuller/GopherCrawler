@@ -9,8 +9,8 @@ public class GopherMenu extends GopherTreeNodeType {
         rows = new ArrayList<>();
     }
 
-    public boolean addRow(GopherRow row) {
-        return rows.add(row);
+    public void addRow(GopherRow row) {
+        rows.add(row);
     }
 
     public void setRows(List<GopherRow> rows) {
