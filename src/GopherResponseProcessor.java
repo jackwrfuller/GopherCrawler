@@ -25,7 +25,9 @@ public class GopherResponseProcessor {
     }
 
     /**
-     * Convert a response string of a menu into a GopherMenu object
+     * Convert a response string of a menu into a GopherMenu object.
+     * <p>
+     * Ignores invalid responses.
      */
     public static List<GopherRow> menuStringToGopherMenu(String response) {
         List<GopherRow> rows = new ArrayList<>();

@@ -1,10 +1,15 @@
 import java.io.*;
 import java.net.*;
+import java.util.logging.*;
 
 public class GopherClient {
     //  IP address and port that client will contact
     static String   serviceHost = "127.0.0.1";
     static int      servicePort = 70;
+
+    private static final Logger logger = Logger.getLogger(GopherClient.class.getName());
+
+
 
     /** Read input until EOF. Send as request to host, print response */
 
@@ -22,7 +27,7 @@ public class GopherClient {
             // Create TCP socket, connected to a single host
             sock = new Socket(host, port);
             remote = (InetSocketAddress) sock.getRemoteSocketAddress();
-            System.out.printf("Client connected to %s %d\n",
+            System.out.printf("Connected to %s:%d\nType your query here: ",
                     remote.getAddress().getHostAddress(), remote.getPort());
             // Keep reading lines and sending them
             input = new BufferedReader(new InputStreamReader(System.in));
@@ -46,7 +51,7 @@ public class GopherClient {
     {
         // No try: if anything goes wrong, higher level will handle
         SockLine.writeLine(sock, request);
-        System.out.println("Sent request to server");
+        logger.log(Level.INFO, "Client request sent: " + request);
     }
 
     /** Read and print server response */
@@ -90,7 +95,6 @@ public class GopherClient {
             inputLoop(serviceHost, servicePort);
             System.out.println("Done.");
         } catch (Exception e) {
-            System.out.println(e.toString());
             System.exit(-1);
         }
     }
