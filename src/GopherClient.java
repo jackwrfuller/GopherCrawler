@@ -19,21 +19,17 @@ public class GopherClient implements GopherClientInterface{
         servicePort = port;
     }
 
+
     /**
      * Send request to server and wait for response.
      * @param request the query to be made to the Gopher server.
      * @return the response string.
      */
-    public String send(String request) {
+    public String send(String request) throws IOException {
         String response = "";
-        try{
-            sock = new Socket(serviceHost, servicePort);
-            sendRequest(sock, request);
-            response = readReply(sock);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Unable to connect to socket");
-        }
-
+        sock = new Socket(serviceHost, servicePort);
+        sendRequest(sock, request);
+        response = readReply(sock);
         System.out.println("Client close");
         // Tell the server we are done
         try {

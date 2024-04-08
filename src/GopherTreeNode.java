@@ -1,22 +1,23 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class GopherTreeNode<T extends GopherTreeNodeType> {
-    public T data;
-    public List<GopherTreeNode<T>> children;
-    public GopherTreeNode<T> parent;
+public class GopherTreeNode {
+    public GopherTreeNodeType data;
+    public List<GopherTreeNode> children;
+    public GopherTreeNode parent;
 
-    public GopherTreeNode(T data) {
+    public GopherTreeNode(GopherTreeNodeType data) {
         this.data = data;
         children = new ArrayList<>();
     }
 
-    public void addChild(GopherTreeNode<T> node) {
+    public void addChild(GopherTreeNode node) {
         children.add(node);
+        node.parent = this;
     }
 
-    public void addChild(T child) {
-        GopherTreeNode<T> childNode = new GopherTreeNode<>(child);
+    public void addChild(GopherTreeNodeType child) {
+        GopherTreeNode childNode = new GopherTreeNode(child);
         addChild(childNode);
     }
 
