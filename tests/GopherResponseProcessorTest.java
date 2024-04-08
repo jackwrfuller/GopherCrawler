@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GopherResponseProcessorTest {
@@ -36,5 +38,22 @@ class GopherResponseProcessorTest {
             String badString = type + "Test\t/test\tgopher.quax.org\t70";
             assertThrows(IllegalArgumentException.class, () -> GopherResponseProcessor.menuLineToGopherRow(badString));
         }
+    }
+
+    /**
+     * Check menu response string is correctly parsed into a GopherMenu object
+     */
+    @Test
+    void testMenuStringToGopherMenu() {
+        String response = "1Pygopherd Home\t/devel/gopher/pygopherd\tgopher.quux.org\t70\n" +
+                "1Quux.Org Mega Server\t/\tgopher.quux.org\t70\n";
+
+        GopherRow row1 = new GopherRow(GopherItemType.MENU, "Pygopherd Home", "/devel/gopher/pygopherd", "gopher.quux.org", "70");
+        GopherRow row2 = new GopherRow(GopherItemType.MENU, "Quux.Org Mega Server", "/", "gopher.quux.org", "70");
+
+        List<GopherRow> rows = GopherResponseProcessor.menuStringToGopherMenu(response);
+
+        assertEquals(row1, rows.get(0));
+        assertEquals(row2, rows.get(1));
     }
 }

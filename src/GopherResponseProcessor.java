@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class GopherResponseProcessor {
 
     /**
@@ -20,4 +23,21 @@ public class GopherResponseProcessor {
         }
         return new GopherRow(itemType, menuLine[0], menuLine[1], menuLine[2], menuLine[3]);
     }
+
+    /**
+     * Convert a response string of a menu into a GopherMenu object
+     */
+    public static List<GopherRow> menuStringToGopherMenu(String response) {
+        List<GopherRow> rows = new ArrayList<>();
+        String[] lines = response.split("\n");
+        for (String line : lines) {
+            try {
+                GopherRow row = menuLineToGopherRow(line);
+                rows.add(row);
+            } catch (IllegalArgumentException ignored) {}
+
+        }
+        return rows;
+    }
+
 }
