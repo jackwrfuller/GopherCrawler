@@ -10,7 +10,7 @@ public enum GopherItemType {
     HTML("h"),
     INFO("i");
 
-    private static final Map<String, GopherItemType> itemTypeMap = new HashMap<>();
+    public static final Map<String, GopherItemType> itemTypeMap = new HashMap<>();
 
     static {
         for (GopherItemType itemType : GopherItemType.values()) {
@@ -25,7 +25,10 @@ public enum GopherItemType {
         this.label = label;
     }
 
-    public static GopherItemType fromLabel(String label) {
+    public static GopherItemType fromLabel(String label) throws IllegalArgumentException {
+        if (!itemTypeMap.containsKey(label)) {
+            throw new IllegalArgumentException("Invalid item type string");
+        }
         return itemTypeMap.get(label);
     }
 
