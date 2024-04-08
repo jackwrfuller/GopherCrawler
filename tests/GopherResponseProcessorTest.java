@@ -51,7 +51,7 @@ class GopherResponseProcessorTest {
         GopherRow row1 = new GopherRow(GopherItemType.MENU, "Pygopherd Home", "/devel/gopher/pygopherd", "gopher.quux.org", "70");
         GopherRow row2 = new GopherRow(GopherItemType.MENU, "Quux.Org Mega Server", "/", "gopher.quux.org", "70");
 
-        List<GopherRow> rows = GopherResponseProcessor.menuStringToGopherMenu(response);
+        List<GopherRow> rows = GopherResponseProcessor.menuStringToGopherMenu(response).getRows();
 
         assertEquals(row1, rows.get(0));
         assertEquals(row2, rows.get(1));

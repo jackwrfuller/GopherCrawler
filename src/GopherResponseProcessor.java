@@ -29,17 +29,17 @@ public class GopherResponseProcessor {
      * <p>
      * Ignores invalid responses.
      */
-    public static List<GopherRow> menuStringToGopherMenu(String response) {
-        List<GopherRow> rows = new ArrayList<>();
+    public static GopherMenu menuStringToGopherMenu(String response) {
+        GopherMenu menu = new GopherMenu();
         String[] lines = response.split("\n");
         for (String line : lines) {
             try {
                 GopherRow row = menuLineToGopherRow(line);
-                rows.add(row);
+                menu.addRow(row);
             } catch (IllegalArgumentException ignored) {}
 
         }
-        return rows;
+        return menu;
     }
 
 }

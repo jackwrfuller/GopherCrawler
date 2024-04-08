@@ -2,51 +2,54 @@ import java.io.*;
 import java.net.*;
 import java.util.logging.*;
 
-public class GopherClient {
+public class GopherClient implements GopherClientInterface{
+
+    private Socket sock;
     //  IP address and port that client will contact
-    static String   serviceHost = "127.0.0.1";
-    static int      servicePort = 70;
+    private String   serviceHost = "127.0.0.1";
+    private int      servicePort = 70;
 
     private static final Logger logger = Logger.getLogger(GopherClient.class.getName());
+    public GopherClient() {}
+    public GopherClient(String host, int port) {
+        setTarget(host, port);
+    }
+    public void setTarget(String host, int port) {
+        serviceHost = host;
+        servicePort = port;
+    }
 
+    /**
+     * Send request to server and wait for response.
+     * @param request the query to be made to the Gopher server.
+     * @return the response string.
+     */
+    public String send(String request) {
+        String response = "";
+        BufferedReader input;
+        String line;
 
-
-    /** Read input until EOF. Send as request to host, print response */
-
-    protected static void inputLoop(String host, int port)
-            throws IOException
-    {
-        Socket              sock;
-        BufferedReader      input;
-        String              line;
-        InetSocketAddress   remote;
-
-
-        while (true) {
-
-            // Create TCP socket, connected to a single host
-            sock = new Socket(host, port);
-            remote = (InetSocketAddress) sock.getRemoteSocketAddress();
-            System.out.printf("Connected to %s:%d\nType your query here: ",
-                    remote.getAddress().getHostAddress(), remote.getPort());
-            // Keep reading lines and sending them
-            input = new BufferedReader(new InputStreamReader(System.in));
-            line = input.readLine();
-            if (line == null){
-                break;
-            }
-            sendRequest(sock, line);
-            readReply(sock);
+        try{
+            sock = new Socket(serviceHost, servicePort);
+            sendRequest(sock, request);
+            response = readReply(sock);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Unable to connect to socket");
         }
+
         System.out.println("Client close");
         // Tell the server we are done
-        SockLine.writeLine(sock, "BYE");
-        sock.close();
+        try {
+            SockLine.writeLine(sock, "BYE");
+            sock.close();
+        } catch (Exception ignored) {}
+
+        return response;
     }
 
     /** Send our request to server */
 
-    protected static void sendRequest(Socket sock, String request)
+    protected void sendRequest(Socket sock, String request)
             throws IOException
     {
         // No try: if anything goes wrong, higher level will handle
@@ -56,7 +59,7 @@ public class GopherClient {
 
     /** Read and print server response */
 
-    protected static void readReply(Socket sock)
+    protected String readReply(Socket sock)
             throws IOException
     {
         StringBuilder reply = new StringBuilder();
@@ -68,36 +71,12 @@ public class GopherClient {
             reply.append(line);
         }
 
-
-
         System.out.println(reply);
+        return reply.toString();
     }
 
 
-    /** Handle command line arguments. */
 
-    protected static void processArgs(String[] args)
-    {
-        //  This program has only two CLI arguments, and we know the order.
-        //  For any program with more than two args, use a loop or package.
-        if (args.length > 0) {
-            serviceHost = args[0];
-            if (args.length > 1) {
-                servicePort = Integer.parseInt(args[1]);
-            }
-        }
-    }
-
-    public static void main(String[] args)
-    {
-        try {
-            processArgs(args);
-            inputLoop(serviceHost, servicePort);
-            System.out.println("Done.");
-        } catch (Exception e) {
-            System.exit(-1);
-        }
-    }
 
 }
 
