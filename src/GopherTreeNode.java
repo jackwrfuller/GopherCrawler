@@ -4,13 +4,12 @@ import java.util.List;
 
 public class GopherTreeNode {
     public GopherTreeNodeType data;
-    public List<GopherTreeNode> children;
+    public List<GopherTreeNode> children = new ArrayList<>();
     public GopherTreeNode parent;
     public String selector;
 
     public GopherTreeNode(GopherTreeNodeType data) {
         this.data = data;
-        children = new ArrayList<>();
     }
 
     public GopherTreeNode() {}
@@ -27,7 +26,14 @@ public class GopherTreeNode {
     }
 
     private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
-        String name = data.type.name() + ", " + selector;
+
+        String typeName;
+        if (data == null || data.type == null) {
+            typeName = "";
+        } else {
+            typeName = data.type.name();
+        }
+        String name = typeName + ", " + selector;
         buffer.append(prefix);
         buffer.append(name);
         buffer.append('\n');

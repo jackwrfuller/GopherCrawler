@@ -64,6 +64,7 @@ public class GopherClient implements GopherClientInterface{
             reply.append(line);
         }
 
+        logger.log(Level.INFO, "Server response received");
         System.out.println(reply);
         return reply.toString();
     }

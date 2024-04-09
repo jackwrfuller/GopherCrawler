@@ -31,7 +31,7 @@ public class GopherResponseProcessor {
      */
     public static GopherMenu menuStringToGopherMenu(String response) {
         GopherMenu menu = new GopherMenu();
-        String[] lines = response.split("\n");
+        String[] lines = response.split("\r\n");
         for (String line : lines) {
             try {
                 GopherRow row = menuLineToGopherRow(line);

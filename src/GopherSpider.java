@@ -32,9 +32,13 @@ public class GopherSpider {
         List<GopherRow> rows = ((GopherMenu)currentMenuNode.data).getRows();
 
         for (GopherRow row : rows) {
+            // Ignore informational rows
+            if (row.itemType == GopherItemType.INFO) {
+                continue;
+            }
             // Check if row is an external server
             if (!Objects.equals(row.hostname, this.host) || row.port != this.port) {
-                GopherExternalServer externalServer = new GopherExternalServer(row.hostname, row.port);
+                GopherExternalServer externalServer = new GopherExternalServer(row.itemType , row.hostname, row.port);
                 // Check if server is up
                 externalServer.isUp = isUp(externalServer);
                 // Add external server as leaf node
@@ -73,8 +77,14 @@ public class GopherSpider {
         return row.itemType != GopherItemType.MENU;
     }
 
+    public static void main(String[] args) {
+        GopherSpider spider = new GopherSpider();
 
+        spider.buildServerTree("127.0.0.1", 70);
 
+        System.out.println(spider.gopherServerTree);
+
+    }
 
 
 
