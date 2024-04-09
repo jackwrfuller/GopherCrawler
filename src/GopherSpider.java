@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class GopherSpider {
 
@@ -11,13 +12,16 @@ public class GopherSpider {
 
     private GopherTreeNode gopherServerTree;
 
-    public void buildServerTree(String host, int port) {
+    public void buildServerTree(String host, int port, String selector) {
         this.host = host;
         this.port = port;
 
         gopherServerTree = new GopherTreeNode();
-        gopherServerTree.selector = "/";
+        gopherServerTree.selector = selector;
         crawl(gopherServerTree);
+
+        String fullServerURI = host + ":" + port + selector;
+        GopherClient.logger.log(Level.INFO, "Completed spider crawling of " + fullServerURI);
     }
 
     private void crawl(GopherTreeNode currentMenuNode) {
@@ -80,7 +84,7 @@ public class GopherSpider {
     public static void main(String[] args) {
         GopherSpider spider = new GopherSpider();
 
-        spider.buildServerTree("127.0.0.1", 70);
+        spider.buildServerTree("gopher.quux.org", 70, "/Humor and Fun");
 
         System.out.println(spider.gopherServerTree);
 

@@ -9,7 +9,7 @@ public class GopherClient implements GopherClientInterface{
     private String   serviceHost = "127.0.0.1";
     private int      servicePort = 70;
 
-    private static final Logger logger = Logger.getLogger(GopherClient.class.getName());
+    static final Logger logger = Logger.getLogger(GopherClient.class.getName());
     public GopherClient() {}
     public GopherClient(String host, int port) {
         setTarget(host, port);
@@ -28,9 +28,11 @@ public class GopherClient implements GopherClientInterface{
     public String send(String request) throws IOException {
         String response = "";
         sock = new Socket(serviceHost, servicePort);
+        logger.log(Level.INFO, "Connection opened.");
         sendRequest(sock, request);
         response = readReply(sock);
-        System.out.println("Client close");
+        logger.log(Level.INFO, "Connection closed.");
+        //System.out.println("Client close");
         // Tell the server we are done
         try {
             SockLine.writeLine(sock, "BYE");
@@ -65,7 +67,7 @@ public class GopherClient implements GopherClientInterface{
         }
 
         logger.log(Level.INFO, "Server response received");
-        System.out.println(reply);
+        //System.out.println(reply);
         return reply.toString();
     }
 

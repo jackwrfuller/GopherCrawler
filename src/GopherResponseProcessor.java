@@ -1,8 +1,10 @@
 public class GopherResponseProcessor {
 
     /**
-     * Convert a line of a Gopher menu into a GopherRow DTO
-     * @param line a single line of response from a Gopher
+     * Convert a line of a Gopher menu into a GopherRow DTO.
+     *
+     *
+     * @param line a single line of response from a Gopher, should not be empty
      * @return the menu row
      */
     public static GopherRow menuLineToGopherRow(String line) throws IllegalArgumentException {
@@ -14,8 +16,9 @@ public class GopherResponseProcessor {
 
         // Tokenise by tabs
         String[] menuLine = sb.toString().split("\t");
-        // There should be four tokens, since the itemType has already been extracted above.
-        if (menuLine.length != 4) {
+        // There should be at least four tokens, since the itemType has already been extracted above.
+        // Anything extra is considered extraneous and thrown away.
+        if (menuLine.length < 4) {
             throw new IllegalArgumentException("Invalid gopher menu line");
         }
         // Ensure port field is an integer
@@ -31,7 +34,10 @@ public class GopherResponseProcessor {
      */
     public static GopherMenu menuStringToGopherMenu(String response) {
         GopherMenu menu = new GopherMenu();
-        String[] lines = response.split("\r\n");
+        if (response == null | response.isEmpty()) {
+            return menu;
+        }
+        String[] lines = response.split("\r\n|\n");
         for (String line : lines) {
             try {
                 GopherRow row = menuLineToGopherRow(line);

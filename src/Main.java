@@ -1,6 +1,6 @@
 public class Main {
 
-    static String serviceHost = "127.0.0.1";
+    static String serviceHost = "gopher.quux.org";
     static int servicePort = 70;
 
     /** Handle command line arguments. */
@@ -21,7 +21,7 @@ public class Main {
         try {
             processArgs(args);
             var client = new GopherClient(serviceHost, servicePort);
-            String response = client.send("/");
+            String response = client.send("/Archives");
 
             System.out.println("Done.");
         } catch (Exception e) {

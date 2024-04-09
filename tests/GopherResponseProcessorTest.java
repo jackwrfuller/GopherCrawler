@@ -40,6 +40,15 @@ class GopherResponseProcessorTest {
         }
     }
 
+    @Test
+    void testPlusAtEnd() {
+        String response = "0About This Server\t/About This Server.txt\tgopher.quux.org\t70\t+\n";
+        GopherRow expected = new GopherRow(GopherItemType.TEXT, "About This Server", "/About This Server.txt",
+                "gopher.quux.org", 70);
+        GopherRow actual = GopherResponseProcessor.menuLineToGopherRow(response);
+        assertEquals(expected, actual);
+    }
+
     /**
      * Check menu response string is correctly parsed into a GopherMenu object
      */
