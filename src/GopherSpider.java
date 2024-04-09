@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,11 +35,15 @@ public class GopherSpider {
             // Check if row is an external server
             if (!Objects.equals(row.hostname, this.host) || row.port != this.port) {
                 GopherExternalServer externalServer = new GopherExternalServer(row.hostname, row.port);
+                // Check if server is up
+                externalServer.isUp = isUp(externalServer);
+                // Add external server as leaf node
                 GopherTreeNode externalServerNode = new GopherTreeNode(externalServer);
                 externalServerNode.selector = row.selector;
                 currentMenuNode.addChild(externalServerNode);
                 continue;
             }
+            // Check if row is a non-menu type
             if (isNonMenuType(row)) {
                 GopherFile file = new GopherFile(row.itemType);
                 GopherTreeNode fileNode = new GopherTreeNode(file);
@@ -46,11 +51,21 @@ public class GopherSpider {
                 currentMenuNode.addChild(fileNode);
                 continue;
             }
-            // Row is an internal menu, so we can now recurse
+            // If we are at this point, the row must be an internal menu,
+            // so we can now recurse.
             GopherTreeNode menuNode = new GopherTreeNode();
             menuNode.selector = row.selector;
             currentMenuNode.addChild(menuNode);
             crawl(menuNode);
+        }
+    }
+
+    private boolean isUp(GopherExternalServer server) {
+        try {
+            Socket clientSocket = new Socket(server.host, server.port);
+            return true;
+        } catch(IOException e) {
+            return false;
         }
     }
 
