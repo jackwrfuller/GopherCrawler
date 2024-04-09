@@ -16,6 +16,8 @@ public class GopherSpider {
         this.host = host;
         this.port = port;
 
+        // TODO wrap GopherServerTree so it can store metadata as it is being built
+
         gopherServerTree = new GopherTreeNode();
         gopherServerTree.selector = selector;
         crawl(gopherServerTree);
