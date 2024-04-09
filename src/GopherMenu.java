@@ -7,6 +7,7 @@ public class GopherMenu extends GopherTreeNodeType {
 
     public GopherMenu() {
         rows = new ArrayList<>();
+        this.type = GopherItemType.MENU;
     }
 
     public void addRow(GopherRow row) {
