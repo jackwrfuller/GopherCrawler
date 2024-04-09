@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class GopherResponseProcessor {
 
     /**
@@ -21,7 +18,10 @@ public class GopherResponseProcessor {
         if (menuLine.length != 4) {
             throw new IllegalArgumentException("Invalid gopher menu line");
         }
-        return new GopherRow(itemType, menuLine[0], menuLine[1], menuLine[2], menuLine[3]);
+        // Ensure port field is an integer
+        int port = Integer.parseInt(menuLine[3]);
+
+        return new GopherRow(itemType, menuLine[0], menuLine[1], menuLine[2], port);
     }
 
     /**

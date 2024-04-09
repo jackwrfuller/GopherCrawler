@@ -1,12 +1,16 @@
 public class GopherBinaryFile extends GopherTreeNodeType {
 
-    private final String binFile;
+    private String binFile;
 
-    public GopherBinaryFile(String binFile) {
-        this.binFile = binFile;
+    public GopherBinaryFile() {
+
     }
 
     public String getTextFile() {
         return binFile;
+    }
+
+    public void setFile(String binFile) {
+        this.binFile = binFile;
     }
 }

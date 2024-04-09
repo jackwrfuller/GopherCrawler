@@ -1,99 +1,74 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Objects;
 
 public class GopherSpider {
 
     private GopherClientInterface client;
-    public GopherTreeNode crawl(String host, int port) {
-        GopherTreeNode root;
+    private String host;
+    private int port;
+
+    private GopherTreeNode gopherServerTree;
+
+    public void buildServerTree(String host, int port) {
+        this.host = host;
+        this.port = port;
+
+        gopherServerTree = new GopherTreeNode();
+        gopherServerTree.selector = "/";
+        crawl(gopherServerTree);
+    }
+
+    private void crawl(GopherTreeNode currentMenuNode) {
         this.client = new GopherClient(host, port);
         String response;
         try {
-            response = client.send("/");
-        } catch (IOException e) {
-            Logger.getLogger(GopherClient.class.getName()).log(Level.SEVERE, "Unable to connect");
-            return null;
+            response = client.send(currentMenuNode.selector);
+        } catch (IOException _) {
+            return;
         }
-        GopherMenu menu = GopherResponseProcessor.menuStringToGopherMenu(response);
-        root = new GopherTreeNode(menu);
-        crawlerHelper(root);
+        currentMenuNode.data = GopherResponseProcessor.menuStringToGopherMenu(response);
+        List<GopherRow> rows = ((GopherMenu)currentMenuNode.data).getRows();
 
-        return root;
+        for (GopherRow row : rows) {
+            // Check if row is an external server
+            if (!Objects.equals(row.hostname, this.host) || row.port != this.port) {
+                GopherExternalServer externalServer = new GopherExternalServer(row.hostname, row.port);
+                GopherTreeNode externalServerNode = new GopherTreeNode(externalServer);
+                externalServerNode.selector = row.selector;
+                currentMenuNode.addChild(externalServerNode);
+                continue;
+            }
+            if (isNonMenuType(row)) {
+                GopherFile file = new GopherFile(row.itemType);
+                GopherTreeNode fileNode = new GopherTreeNode(file);
+                fileNode.selector = row.selector;
+                currentMenuNode.addChild(fileNode);
+                continue;
+            }
+            // Row is an internal menu, so we can now recurse
+            GopherTreeNode menuNode = new GopherTreeNode();
+            menuNode.selector = row.selector;
+            currentMenuNode.addChild(menuNode);
+            crawl(menuNode);
+        }
     }
 
-    private void crawlerHelper(GopherTreeNode currentMenuNode) {
-        assert(currentMenuNode.data instanceof GopherMenu);
-
-        var menuRows = ((GopherMenu) currentMenuNode.data).getRows();
-        for (var row : menuRows) {
-            if (row.itemType == GopherItemType.MENU) {
-                String response;
-                try {
-                    response = client.send(row.selector);
-                } catch (IOException e) {
-                    Logger.getLogger(GopherClient.class.getName()).log(Level.SEVERE, "Unable to connect");
-                    return;
-                }
-                GopherMenu menu = GopherResponseProcessor.menuStringToGopherMenu(response);
-                var child = new GopherTreeNode(menu);
-                currentMenuNode.addChild(child);
-
-                crawlerHelper(child);
-            }
-            if (row.itemType == GopherItemType.TEXT) {
-                String response;
-                try {
-                    response = client.send(row.selector);
-                } catch (IOException e) {
-                    Logger.getLogger(GopherClient.class.getName()).log(Level.SEVERE, "Unable to connect");
-                    return;
-                }
-                GopherTextFile txtFile = new GopherTextFile(response);
-                GopherTreeNode txtNode = new GopherTreeNode(txtFile);
-                currentMenuNode.addChild(txtNode);
-                return;
-            }
-            if (row.itemType == GopherItemType.BINARY) {
-                String response;
-                try {
-                    response = client.send(row.selector);
-                } catch (IOException e) {
-                    Logger.getLogger(GopherClient.class.getName()).log(Level.SEVERE, "Unable to connect");
-                    return;
-                }
-                GopherTextFile binFile = new GopherTextFile(response);
-                GopherTreeNode binNode = new GopherTreeNode(binFile);
-                currentMenuNode.addChild(binNode);
-                return;
-            }
-
-
-
-
-
-
-        }
-
-
+    private boolean isNonMenuType(GopherRow row) {
+        return row.itemType != GopherItemType.MENU;
     }
 
 
 
-    /**
-     * Given a GopherMenu, return a list of menu selectors to be crawled.
-     */
-    public List<String> getMenuSelectorsFromMenu(GopherMenu menu) {
-        List<String> selectors = new ArrayList<>();
-        for (GopherRow row : menu.getRows()) {
-            if (row.itemType == GopherItemType.MENU) {
-                selectors.add(row.selector);
-            }
-        }
-        return selectors;
-    }
+
+
+
+
+
+
+
+
+
 
 
 

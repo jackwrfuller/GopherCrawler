@@ -11,12 +11,12 @@ class GopherResponseProcessorTest {
      */
     @Test
     void testMenuLineToGopherRow() {
-        GopherRow testRow = new GopherRow(GopherItemType.MENU, "Test", "/test", "gopher.quax.org", "70");
+        GopherRow testRow = new GopherRow(GopherItemType.MENU, "Test", "/test", "gopher.quax.org", 70);
         String testMenuRowString = "1Test\t/test\tgopher.quax.org\t70";
         GopherRow result = GopherResponseProcessor.menuLineToGopherRow(testMenuRowString);
         assertEquals(result, testRow);
 
-        GopherRow emptyMenu = new GopherRow(GopherItemType.INFO, "", "fake", "(NULL)", "0");
+        GopherRow emptyMenu = new GopherRow(GopherItemType.INFO, "", "fake", "(NULL)", 0);
         String emptyRow = "i\tfake\t(NULL)\t0";
         result = GopherResponseProcessor.menuLineToGopherRow(emptyRow);
         assertEquals(result, emptyMenu);
@@ -48,8 +48,8 @@ class GopherResponseProcessorTest {
         String response = "1Pygopherd Home\t/devel/gopher/pygopherd\tgopher.quux.org\t70\n" +
                 "1Quux.Org Mega Server\t/\tgopher.quux.org\t70\n";
 
-        GopherRow row1 = new GopherRow(GopherItemType.MENU, "Pygopherd Home", "/devel/gopher/pygopherd", "gopher.quux.org", "70");
-        GopherRow row2 = new GopherRow(GopherItemType.MENU, "Quux.Org Mega Server", "/", "gopher.quux.org", "70");
+        GopherRow row1 = new GopherRow(GopherItemType.MENU, "Pygopherd Home", "/devel/gopher/pygopherd", "gopher.quux.org", 70);
+        GopherRow row2 = new GopherRow(GopherItemType.MENU, "Quux.Org Mega Server", "/", "gopher.quux.org", 70);
 
         List<GopherRow> rows = GopherResponseProcessor.menuStringToGopherMenu(response).getRows();
 

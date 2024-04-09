@@ -9,9 +9,9 @@ public class GopherRow {
 
     public String hostname;
 
-    public String port;
+    public int port;
 
-    public GopherRow(GopherItemType itemType, String userDisplayString, String selector, String hostname, String port) {
+    public GopherRow(GopherItemType itemType, String userDisplayString, String selector, String hostname, int port) {
         this.itemType = itemType;
         this.userDisplayString = userDisplayString;
         this.selector = selector;

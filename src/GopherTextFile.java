@@ -1,12 +1,15 @@
 public class GopherTextFile extends GopherTreeNodeType {
 
-    private final String textFile;
+    private String textFile;
 
-    public GopherTextFile(String textFile) {
-        this.textFile = textFile;
+    public GopherTextFile() {
     }
 
     public String getTextFile() {
         return textFile;
+    }
+
+    public void setFile(String textFile) {
+        this.textFile = textFile;
     }
 }
