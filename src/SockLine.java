@@ -9,7 +9,7 @@ public class SockLine {
     public static void writeLine(Socket sock, String txt)
             throws IOException
     {
-        txt = txt + "\n";
+        txt = txt + "\r\n";
         sock.getOutputStream().write(txt.getBytes("ASCII"));
     }
 

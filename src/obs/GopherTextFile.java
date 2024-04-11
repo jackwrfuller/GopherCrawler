@@ -1,3 +1,7 @@
+package obs;
+
+import obs.GopherTreeNodeType;
+
 public class GopherTextFile extends GopherTreeNodeType {
 
     private String textFile;

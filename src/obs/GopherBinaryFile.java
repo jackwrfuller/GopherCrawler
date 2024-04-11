@@ -1,3 +1,5 @@
+package obs;
+
 public class GopherBinaryFile extends GopherTreeNodeType {
 
     private String binFile;

@@ -41,6 +41,9 @@ public class GopherResponseProcessor {
         for (String line : lines) {
             try {
                 GopherRow row = menuLineToGopherRow(line);
+                if (row.itemType == GopherItemType.INFO) {
+                    continue;
+                }
                 menu.addRow(row);
             } catch (IllegalArgumentException ignored) {}
 

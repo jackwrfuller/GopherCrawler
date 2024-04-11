@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.logging.*;
 
-public class GopherClient implements GopherClientInterface{
+public class GopherClient {
 
     private Socket sock;
     //  IP address and port that client will contact
@@ -67,7 +67,7 @@ public class GopherClient implements GopherClientInterface{
         }
 
         logger.log(Level.INFO, "Server response received");
-        //System.out.println(reply);
+        System.out.println(reply);
         return reply.toString();
     }
 
