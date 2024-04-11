@@ -17,9 +17,7 @@ public class TreeNode {
 
     List<TreeNode> children = new ArrayList<>();
 
-    TreeNode parent;
-
-    public Status status = Status.ERROR;
+    public Status status = Status.OK;
 
     public TreeNode(GopherItemType type, String selector, String host, int port) {
         this.type = type;
@@ -28,10 +26,6 @@ public class TreeNode {
         this.port = port;
     }
 
-    public void addChild(TreeNode child) {
-        this.children.add(child);
-        child.parent = this;
-    }
 
     public String toString() {
         StringBuilder buffer = new StringBuilder(50);

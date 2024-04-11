@@ -42,7 +42,7 @@ public class SockLine {
             if (ch == (int)'\n')
                 break;
         }
-        txt = new String(inData.toByteArray(), 0, inData.size(), "UTF-8");
+        txt = new String(inData.toByteArray(), 0, inData.size(), StandardCharsets.US_ASCII);
         return txt;
     }
 
