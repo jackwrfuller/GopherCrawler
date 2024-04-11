@@ -1,6 +1,7 @@
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class SockLine {
 
@@ -10,7 +11,7 @@ public class SockLine {
             throws IOException
     {
         txt = txt + "\r\n";
-        sock.getOutputStream().write(txt.getBytes("ASCII"));
+        sock.getOutputStream().write(txt.getBytes(StandardCharsets.US_ASCII));
     }
 
     /** Read single line terminated by \n, or null if closed. */

@@ -1,9 +1,7 @@
-import obs.GopherTreeNodeType;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class GopherMenu extends GopherTreeNodeType {
+public class GopherMenu{
 
     private List<GopherRow> rows;
 

@@ -44,7 +44,7 @@ public class Crawler {
         try {
             response = client.send(parent.selector);
             parent.status = Status.OK;
-        } catch (IOException ignore) {
+        } catch (Exception ignore) {
             // We abort early
            parent.status = Status.ERROR;
         }
@@ -79,12 +79,13 @@ public class Crawler {
     }
 
     private void setBinaryFileSize(TreeNode parent, String response) {
-        parent.size = 0;
+        // TODO modify to handle binary file length differently
+        parent.size = response.length();
     }
 
     public static void main(String[] args) {
         Crawler crawler = new Crawler("comp3310.ddns.net", 70);
-        crawler.buildServerTree("/acme");
+        crawler.buildServerTree("/misc");
         System.out.println(crawler.serverTree);
     }
 
