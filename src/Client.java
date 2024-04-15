@@ -58,23 +58,4 @@ public class Client {
         return inData.toByteArray();
     }
 
-
-
-    public static void main(String[] args) {
-        Client client = new Client();
-        String response;
-        byte[] bytes;
-        try {
-            bytes = client.send("/misc/encabulator.jpeg");
-            response = new String(bytes, 0, bytes.length, StandardCharsets.UTF_8);
-
-        } catch (Exception e) {
-            return;
-        }
-        System.out.println(response);
-        //System.out.println(trimTextFile(response));
-        //response = response.replaceAll("\\r\\n", "\\n");
-        System.out.println("Size: " + bytes.length);
-
-    }
 }

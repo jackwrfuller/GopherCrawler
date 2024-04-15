@@ -183,8 +183,23 @@ public class Crawler {
     }
 
     public static void main(String[] args) {
-        Crawler crawler = new Crawler("comp3310.ddns.net", 70);
-        crawler.buildServerTree("");
+        String host = "comp3310.ddns.net";
+        int port = 70;
+        String selector = "";
+
+        if (args.length > 0) {
+            host = args[0];
+            if (args.length > 1) {
+                port = Integer.parseInt(args[1]);
+                if (args.length > 2) {
+                    selector = args[2];
+                }
+            }
+        
+        }
+        
+        Crawler crawler = new Crawler(host, port);
+        crawler.buildServerTree(selector);
         System.out.println(crawler.serverTree);
         report(crawler);
     }
