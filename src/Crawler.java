@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Crawler {
@@ -9,13 +9,13 @@ public class Crawler {
     private TreeNode serverTree;
 
     private final Set<String> visited = new HashSet<>();
-    private Set<String> externalSites = new HashSet<>();
+    private final Set<String> externalSites = new HashSet<>();
 
     private int numDirectories = 0;
-    private Set<String> textFiles = new HashSet<>();
-    private Set<String> binaryFiles = new HashSet<>();
+    private final Set<String> textFiles = new HashSet<>();
+    private final Set<String> binaryFiles = new HashSet<>();
 
-    private Set<String> invalidLinks = new HashSet<>();
+    private final Set<String> invalidLinks = new HashSet<>();
 
     private int smallestBinaryFileSize = Integer.MAX_VALUE;
     private int largestBinaryFileSize = Integer.MIN_VALUE;
@@ -44,7 +44,8 @@ public class Crawler {
     }
 
     private void crawl(TreeNode parent) {
-        System.out.println(parent.selector);
+        String timestamp = new SimpleDateFormat("HH.mm.ss").format(new Date());
+        System.out.println( "[" + timestamp + "]: " + parent.selector);
         if (parent.type == GopherItemType.ERROR) {
             invalidLinks.add(parent.selector);
 
@@ -130,21 +131,28 @@ public class Crawler {
     }
 
     public static void report(Crawler crawler) {
-
+        System.out.println("===================STATISTICS===================");
         System.out.printf("Number of directories: %s\n", crawler.numDirectories);
         System.out.printf("Number of text files: %s\n", crawler.textFiles.size());
         System.out.printf("Number of binary files: %s\n", crawler.binaryFiles.size());
-        System.out.printf("Largest text file size: %s\n", crawler.textFiles.size() == 0 ? "N/A" : crawler.largestTextFileSize);
-        System.out.printf("Largest binary file size: %s\n", crawler.binaryFiles.size() == 0 ? "N/A" : crawler.largestBinaryFileSize);
-        System.out.printf("Smallest binary file size: %s\n", crawler.binaryFiles.size() == 0 ? "N/A" : crawler.smallestBinaryFileSize);
+        System.out.printf("Largest text file size: %s\n", crawler.textFiles.isEmpty() ? "N/A" : crawler.largestTextFileSize);
+        System.out.printf("Largest binary file size: %s\n", crawler.binaryFiles.isEmpty() ? "N/A" : crawler.largestBinaryFileSize);
+        System.out.printf("Smallest binary file size: %s\n", crawler.binaryFiles.isEmpty() ? "N/A" : crawler.smallestBinaryFileSize);
         System.out.printf("Number of invalid references: %s\n", crawler.invalidLinks.size());
         System.out.printf("Number of external references: %s\n", crawler.externalSites.size());
 
-        System.out.println("Text file found were: ");
+        System.out.println("Text files found were: ");
         var sortedTextFileList = new ArrayList<>(crawler.textFiles);
         Collections.sort(sortedTextFileList);
         for (String file : sortedTextFileList) {
-            System.out.println(file);
+            System.out.println(" - " + file);
+        }
+
+        System.out.println("Binary files found were: ");
+        var sortedBinaryFileList = new ArrayList<>(crawler.binaryFiles);
+        Collections.sort(sortedBinaryFileList);
+        for (String file : sortedBinaryFileList) {
+            System.out.println(" - " + file);
         }
     }
 
