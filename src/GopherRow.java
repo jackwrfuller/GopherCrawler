@@ -1,5 +1,12 @@
 import java.util.Objects;
 
+/**
+ * A DTO representing a resource in a Gopher menu, used by
+ * GopherResponseProcessor and GopherMenu to process server responses
+ *
+ * @see GopherMenu
+ * @see GopherResponseProcessor
+ */
 public class GopherRow {
     public GopherItemType itemType;
 

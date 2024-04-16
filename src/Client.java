@@ -2,26 +2,43 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * A simple Gopher protocol client that sends String requests and receives
+ * responses as byte arrays.
+ * <p>
+ * Based on and inspired by the TCPClient used in the tutorials, though
+ * significantly different. For example, this client does not process responses
+ * line-by-line, and nor does it return a String.
+ */
 public class Client {
     
-    private Socket sock = new Socket();
-    //  IP address and port that client will contact
-    private String   serviceHost = "comp3310.ddns.net";
-    private int      servicePort = 70;
+    private final Socket sock = new Socket();
+    // Host and port that client will contact
+    private final String serviceHost;
+    private final int servicePort;
 
-    public Client() {}
     public Client(String host, int port) {
         serviceHost = host;
         servicePort = port;
     }
 
+    /**
+     * Sends a request to the Gopher server and returns the response.
+     * <p>
+     * Timeout is hardcoded to happen after 5 seconds and throws an IOException.
+     * <p>
+     * A response is limited to 100,000 bytes. If a server's response exceeds
+     * this limit, an IOException is thrown.
+     *
+     * @param selector the resource or menu to receive.
+     * @return the server response, if any.
+     * @throws IOException if any networking errors occurred, such as timeout.
+     */
     public byte[] send(String selector) throws IOException {
         byte[] response;
-
         sock.connect(new InetSocketAddress(serviceHost, servicePort), 5000);
         sock.setSoTimeout(5000);
         sendRequest(selector + "\r\n");
-    
         response = readReply();
         // Tell the server we are done
         try {
@@ -36,26 +53,25 @@ public class Client {
     }
 
     private byte[] readReply() throws IOException {
-        ByteArrayOutputStream inData = new ByteArrayOutputStream();
-        int     ch;
-        int i = 0;
+        ByteArrayOutputStream response = new ByteArrayOutputStream();
+        int nextChar;
+        int byteCount = 0;
         while (true) {
-            if (i > 100000) {
+            // Prevent 'firehose' behaviour from servers.
+            if (byteCount > 100000) {
                 throw new IOException("Maximum file size reached!");
             }
-            ch = sock.getInputStream().read();
-            if (ch < 0) {
-                // Socket closed. If we have any data it is an incomplete
-                // line, otherwise immediately return null
-                if (inData.size() > 0)
+            nextChar = sock.getInputStream().read();
+            if (nextChar < 0) {
+                if (response.size() > 0)
                     break;
                 else
                     return null;
             }
-            inData.write((byte)ch);
-            i++;
+            response.write((byte)nextChar);
+            byteCount++;
         }
-        return inData.toByteArray();
+        return response.toByteArray();
     }
 
 }

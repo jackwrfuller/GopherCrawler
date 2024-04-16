@@ -3,7 +3,6 @@ public class GopherResponseProcessor {
     /**
      * Convert a line of a Gopher menu into a GopherRow DTO.
      *
-     *
      * @param line a single line of response from a Gopher, should not be empty
      * @return the menu row
      */

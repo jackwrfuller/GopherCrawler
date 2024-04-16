@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A DTO representing a Gopher menu returned by a server.
+ */
 public class GopherMenu{
 
-    private List<GopherRow> rows;
+    private final List<GopherRow> rows;
 
     public GopherMenu() {
         rows = new ArrayList<>();
@@ -11,10 +14,6 @@ public class GopherMenu{
 
     public void addRow(GopherRow row) {
         rows.add(row);
-    }
-
-    public void setRows(List<GopherRow> rows) {
-        this.rows = rows;
     }
 
     public List<GopherRow> getRows() {

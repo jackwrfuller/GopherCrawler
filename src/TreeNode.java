@@ -2,19 +2,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
+/**
+ * A tree node used to construct a tree structure that represents a Gopher server.
+ * <p>
+ * Contains all the relevant information about a Gopher response needed to
+ * report the statistics of a Gopher server.
+ */
 public class TreeNode {
 
     public GopherItemType type;
-
     public String selector;
-
     public String host;
     public int port;
-
     public int size;
-
     List<TreeNode> children = new ArrayList<>();
-
     public Status status = Status.OK;
 
     public TreeNode(GopherItemType type, String selector, String host, int port) {
@@ -24,7 +26,7 @@ public class TreeNode {
         this.port = port;
     }
 
-
+    @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder(50);
         print(buffer, "", "");
