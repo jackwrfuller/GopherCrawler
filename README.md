@@ -29,3 +29,22 @@ java Crawler.java
 ```
 
 ## Technical Notes
+
+## Definitions
+
+*External Server*: a server that has a different port or a different hostname (or both) than COMP3310 official gopher server.
+In this project, this classified as a `FOREIGN` server.
+
+*Maximum File Size: 100,000 bytes.
+
+*Timeout Duration*: 5 seconds.
+
+*Invalid Reference/Server: Any reference/server that causes an error to be thrown when attempting to crawl it is considered 'invalid'.
+This could be because:
+- The Gopher server returned a error code itself (i.e. a '3' code)
+- The client did not respond within the timeout duration (i.e. the server timed out)
+- The server's reponse exceeds the maximum file size.
+
+## Wireshark Summary
+
+to do
