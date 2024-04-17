@@ -9,7 +9,7 @@ You can use the zip file submitted. Otherwise, you can clone it:
 
 ```shell
 git clone -b release https://github.com/jackwrfuller/GopherCrawler.git
-cd GopherCrawler 
+cd GopherCrawler/src 
 ```
 
 ## Usage
