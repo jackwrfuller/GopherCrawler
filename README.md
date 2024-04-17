@@ -47,4 +47,5 @@ This could be because:
 
 ## Wireshark Summary
 
-to do
+![gopher-wireshark-summary](https://github.com/jackwrfuller/GopherCrawler/assets/78133717/2315e470-86c9-4c1b-bd74-c732999f23c3)
+
