@@ -17,7 +17,7 @@ public class Crawler {
 
     // Statistics to store and report
     private final Set<String> visited = new HashSet<>();
-    private final Set<String> externalSites = new HashSet<>();
+    private final Set<Map.Entry<String, Boolean>> externalSites = new HashSet<>();
     private int numDirectories = 0;
     private final Set<String> textFiles = new HashSet<>();
     private final Set<String> binaryFiles = new HashSet<>();
@@ -55,7 +55,7 @@ public class Crawler {
 
             if (!Objects.equals(parent.host, this.host) || parent.port != this.port) {
                 parent.status = Status.FOREIGN;
-                externalSites.add(parent.host + ":" + port);
+                externalSites.add(new AbstractMap.SimpleEntry<>(parent.host + ":" + parent.port, false));
                 return;
             }
             return;
@@ -63,7 +63,7 @@ public class Crawler {
         }
         if (!Objects.equals(parent.host, this.host) || parent.port != this.port) {
             parent.status = Status.FOREIGN;
-            externalSites.add(parent.host + ":" + port);
+            externalSites.add(new AbstractMap.SimpleEntry<>(parent.host + ":" + parent.port, true));
             return;
         }
 
@@ -181,6 +181,14 @@ public class Crawler {
         Collections.sort(sortedBinaryFileList);
         for (String file : sortedBinaryFileList) {
             System.out.println(" - " + file);
+        }
+
+        System.out.println("The external sites found were: ");
+        var externalServerList = new ArrayList<>(externalSites);
+        //Collections.sort(externalServerList);
+        for (Map.Entry<String, Boolean> server : externalServerList) {
+            String isServerUp = server.getValue() ? "UP" : "DOWN";
+            System.out.println(" - " + server.getKey() + " [" + isServerUp + "]");
         }
 
         System.out.println("\nThe smallest text file was: " + smallestTextFileSelector + " (" + smallestTextFile.length() + " bytes).");

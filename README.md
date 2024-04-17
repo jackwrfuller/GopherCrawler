@@ -43,7 +43,7 @@ In this project, this classified as a `FOREIGN` server.
 This could be because:
 - The Gopher server returned a error code itself (i.e. a '3' code)
 - The client did not respond within the timeout duration (i.e. the server timed out)
-- The server's reponse exceeds the maximum file size.
+- The server's response exceeds the maximum file size.
 
 ## Wireshark Summary
 
